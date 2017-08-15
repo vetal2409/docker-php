@@ -3,10 +3,6 @@ FROM ubuntu:16.04
 MAINTAINER Vitalii Sydorenko <vetal.sydo@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PHP_XDEBUG_REMOTE_AUTOSTART 1
-ENV PHP_CLI_MEMORY_LIMIT 512M
-ENV PHP_FPM_MEMORY_LIMIT 512M
-
 
 # install dependency
 RUN apt-get update \
@@ -55,13 +51,11 @@ RUN mkdir /run/php
 RUN phpdismod xdebug
 RUN echo "export PHP_IDE_CONFIG=\"serverName=server\"" >> ~/.bashrc
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 COPY scripts /var/scripts
 
 RUN mv /var/scripts/xdebug.sh /usr/local/bin/xdebug
 RUN chmod +x /usr/local/bin/xdebug
 
-RUN mv /var/scripts/start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/start.sh
-CMD ["start.sh"]
+CMD ["php7.1-fpm"]
